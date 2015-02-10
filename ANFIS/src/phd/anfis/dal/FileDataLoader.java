@@ -30,7 +30,7 @@ public class FileDataLoader implements IDataLoader {
 				for (int j=0 ; j<tmp.length-1 ; j++){
 					tmp0Layer[j] = new Layer0Node(Double.parseDouble(tmp[j]));
 				}
-				Double tmpOut = Double.parseDouble(tmp[tmp.length]);
+				Double tmpOut = Double.parseDouble(tmp[tmp.length-1]);
 				i.add(tmp0Layer);
 				o.add(tmpOut);
 			}
