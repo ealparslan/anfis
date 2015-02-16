@@ -17,7 +17,7 @@ public class FileDataLoader implements IDataLoader {
 	}
 	
 	@Override
-	public void LoadData(List<INode[]> i, List<Double> o) {
+	public void LoadData(List<Double[]> i, List<Double> o) {
 		
 		BufferedReader br = null;
 
@@ -26,9 +26,9 @@ public class FileDataLoader implements IDataLoader {
 			br = new BufferedReader(new FileReader(filePath));
 			while ((sCurrentLine = br.readLine()) != null) {
 				String[] tmp = sCurrentLine.split(";");
-				INode[] tmp0Layer = new INode[tmp.length-1];
+				Double[] tmp0Layer = new Double[tmp.length-1];
 				for (int j=0 ; j<tmp.length-1 ; j++){
-					tmp0Layer[j] = new Layer0Node(Double.parseDouble(tmp[j]));
+					tmp0Layer[j] = Double.parseDouble(tmp[j]);
 				}
 				Double tmpOut = Double.parseDouble(tmp[tmp.length-1]);
 				i.add(tmp0Layer);

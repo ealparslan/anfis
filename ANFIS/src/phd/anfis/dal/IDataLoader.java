@@ -6,6 +6,6 @@ import phd.anfis.datastructures.INode;
 
 public interface IDataLoader {
 	
-	public void LoadData(List<INode[]> i,List<Double> o);
+	public void LoadData(List<Double[]> i,List<Double> o);
 
 }
