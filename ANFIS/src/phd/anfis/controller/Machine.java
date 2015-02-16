@@ -2,6 +2,8 @@ package phd.anfis.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import phd.anfis.algorithms.Cartesian;
 import phd.anfis.datastructures.INode;
 import phd.anfis.datastructures.Layer0Node;
 import phd.anfis.datastructures.Layer1Node;
@@ -53,24 +55,27 @@ public class Machine {
 			}
 		}
 		
-		// postnodes for layer 1
-		for (int i=0 ; i<layer1.length ; i++){
-			int inp_order = ((int) i / MF_NUMBER);
-			int float_amount = (int) Math.pow(MF_NUMBER, inp_order);
-			int mf_order = i % MF_NUMBER;
-			int index= mf_order*MF_NUMBER;
-			do {
-				
-				for (int n=0; n<float_amount ; n++){
-					layer1[i].addPostNode(layer2[index]);
-					index += float_amount;
-				}
-				for (int n=0; n<float_amount ; n++){
-					index++;
-				}	
-			} while (index<layer2.length);			
+		Cartesian cart = new Cartesian();
+		List<List<INode>> general= new ArrayList<List<INode>>();
+		List<INode> tempList = null;
+		int mf_order = 0;
+		for (int i=0; i<layer1.length ; i++){
+			if (mf_order%MF_NUMBER==0){
+				tempList = new ArrayList<INode>();
+			}
+			tempList.add(layer1[i]);
+			mf_order++;
+			if (mf_order%MF_NUMBER==0){
+				general.add(tempList);
+			}
 		}
-		
+		int index=0;
+		List<List<INode>> product = cart.cartesianProduct(general);
+		for (List<INode> list : product) {
+			layer2[index].setPreNodes(list);
+			index++;
+		}
+		definePostNodes(layer2);
 		
 		// postnodes for layer 2
 		for (INode iNode : layer2) {
@@ -90,20 +95,11 @@ public class Machine {
 		definePreNodes(layer4);
 		definePreNodes(layer3);
 		definePreNodes(layer2);
-		definePreNodes(layer1);
+		//definePreNodes(layer1);
 		definePreNodes(layer0);
 		
-		//System.out.println(layerToString(layer1));
-		/*
-		for (INode iNode : layer1) {
-			System.out.println("\nLayer 1 Node:" + iNode.getValue());
-			System.out.println("Post nodes: ");
-			for (INode pNode : iNode.getPostNodes()) {
-				System.out.print(pNode.getValue() + "\t");
-			}
-			System.out.println("");
-		}
-		*/
+		System.out.println(layerToString(layer1));
+
 	}
 	
 	private void definePreNodes(INode[] layer) throws NoPreNodeException{
@@ -111,6 +107,15 @@ public class Machine {
 			List<INode> postnodes = layer[i].getPostNodes();
 			for (INode iNode : postnodes) {
 				iNode.addPreNode(layer[i]);
+			}
+		}
+	}
+	
+	private void definePostNodes(INode[] layer) throws NoPostNodeException{
+		for (int i=0; i<layer.length ; i++){
+			List<INode> prenodes = layer[i].getPreNodes();
+			for (INode iNode : prenodes) {
+				iNode.addPostNode(layer[i]);
 			}
 		}
 	}
