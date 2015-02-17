@@ -20,5 +20,13 @@ public class Layer5Node extends AbstractNode {
 	public void setPostNodes(List<INode> l) throws NoPostNodeException {
 		throw new NoPostNodeException();
 	}
+	
+	@Override
+	public void compute(double... param){
+		double retval=0;
+		for (INode iNode : super.getPreNodes())
+			retval += iNode.getValue();
+		super.setValue(retval);
+	}
 
 }

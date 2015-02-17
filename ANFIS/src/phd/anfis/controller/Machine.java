@@ -37,7 +37,9 @@ public class Machine {
 		for(int i=0;i<layer3.length;i++) layer3[i]=new Layer3Node(0);
 		for(int i=0;i<layer4.length;i++) layer4[i]=new Layer4Node(0);
 		for(int i=0;i<layer5.length;i++) layer5[i]=new Layer5Node(0);
+		
 		dummyDataLoader();
+		
 		try {
 			constructFIS();
 		} catch (NoPostNodeException | NoPreNodeException e) {
@@ -45,6 +47,40 @@ public class Machine {
 		}
 	}
 	
+	public void learn(Double realOutput){
+		System.out.println("==========NEW TRAINING=========");
+		System.out.println("Layer 1:");
+		for (INode iNode : layer1) {
+			iNode.compute();
+			System.out.println(iNode.getValue());
+		}
+		System.out.println("Layer 2:");
+		double layer2total = 0;
+		for (INode iNode : layer2) {
+			iNode.compute();
+			layer2total += iNode.getValue();
+			System.out.println(iNode.getValue());
+		}
+		System.out.println("Layer 3:");
+		for (INode iNode : layer3) {
+			iNode.compute(layer2total);
+			System.out.println(iNode.getValue());
+		}
+		System.out.println("Layer 4:");
+		double[] inputparams = new double[INPUT_NUMBER];
+		for (int n=0 ; n<INPUT_NUMBER ; n++)
+			inputparams[n]=layer0[n].getValue();
+		for (INode iNode : layer4) {
+			iNode.compute(inputparams);
+			System.out.println(iNode.getValue());
+		}
+		System.out.println("Layer 5:");
+		for (INode iNode : layer5) {
+			iNode.compute();
+			System.out.println(iNode.getValue());
+		}
+		
+	}
 	
 	private void constructFIS() throws NoPostNodeException, NoPreNodeException{
 		
@@ -54,7 +90,7 @@ public class Machine {
 				layer0[i].addPostNode(layer1[i*MF_NUMBER+j]);
 			}
 		}
-		
+		// prenodes for layer 2
 		Cartesian cart = new Cartesian();
 		List<List<INode>> general= new ArrayList<List<INode>>();
 		List<INode> tempList = null;
@@ -78,10 +114,8 @@ public class Machine {
 		definePostNodes(layer2);
 		
 		// postnodes for layer 2
-		for (INode iNode : layer2) {
-			for (INode iNode2 : layer3) {
-				iNode.addPostNode(iNode2);
-			}
+		for (int i=0; i<layer2.length ; i++) {
+			layer2[i].addPostNode(layer3[i]);
 		}	
 		// postnodes for layer 3
 		for (int i=0 ; i<layer3.length ; i++){
@@ -95,10 +129,10 @@ public class Machine {
 		definePreNodes(layer4);
 		definePreNodes(layer3);
 		definePreNodes(layer2);
-		//definePreNodes(layer1);
+		//definePreNodes(layer1); //calculated from postnodes
 		definePreNodes(layer0);
 		
-		System.out.println(layerToString(layer1));
+		//System.out.println(layerToString(layer1));
 
 	}
 	
@@ -148,8 +182,6 @@ public class Machine {
 			i++;
 		}
 	}
-	
-	
 	
 	public String layerToString(INode[] layer){
 		String output = "";

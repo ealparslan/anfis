@@ -17,6 +17,11 @@ public abstract class AbstractNode implements INode {
 		this.preNodes = new ArrayList<INode>();
 		this.postNodes = new ArrayList<INode>();
 	}
+	
+	@Override
+	public void compute(double... param){
+		// no any special computation by default
+	}
 
 	@Override
 	public void addPreNode(INode n) throws NoPreNodeException {

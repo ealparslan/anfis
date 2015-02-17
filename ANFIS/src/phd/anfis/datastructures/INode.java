@@ -15,4 +15,5 @@ public interface INode {
 	public void addPostNode(INode n) throws NoPostNodeException;
 	public void setPostNodes(List<INode> l) throws NoPostNodeException;
 	public List<INode> getPostNodes();
+	public void compute(double... param);
 }
