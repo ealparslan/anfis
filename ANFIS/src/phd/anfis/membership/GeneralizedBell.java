@@ -1,16 +1,15 @@
 package phd.anfis.membership;
 
-import java.util.Random;
+import phd.anfis.datastructures.Parameter;
 
 public class GeneralizedBell implements IMembershipFunction {
 
 	double a,b,c;
 	
-	public GeneralizedBell() {
-		Random r = new Random();
-		a = 1 * r.nextDouble();
-		b = 1 * r.nextDouble();
-		c = 1 * r.nextDouble();
+	public GeneralizedBell(Parameter[] params) {
+		a = params[0].getValue();
+		b = params[1].getValue();
+		c = params[2].getValue();
 	}
 	
 	@Override

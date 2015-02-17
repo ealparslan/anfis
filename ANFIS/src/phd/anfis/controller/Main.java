@@ -31,12 +31,17 @@ public class Main {
 					anfis.layer0[inputElement].setValue(input);
 					inputElement++;
 				}
+				System.out.println("=====================================NEW INPUT=========================");
+				System.out.println("=====================================NEW INPUT=========================");
+				System.out.println("=====================================NEW INPUT=========================");
+				System.out.println("=====================================NEW INPUT=========================");
+
 				anfis.learn(realOutputList.get(inputRow)); // we have a structured machine with filled layer 0, train!! 
 				
 				// something todo about learning results
-				
 				inputRow++;
 			}
+			anfis.updateParameters();
 		}
 		
 	}

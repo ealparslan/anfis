@@ -11,6 +11,7 @@ import phd.anfis.datastructures.Layer2Node;
 import phd.anfis.datastructures.Layer3Node;
 import phd.anfis.datastructures.Layer4Node;
 import phd.anfis.datastructures.Layer5Node;
+import phd.anfis.datastructures.Parameter;
 import phd.anfis.exceptions.NoPostNodeException;
 import phd.anfis.exceptions.NoPreNodeException;
 
@@ -48,68 +49,40 @@ public class Machine {
 	}
 	
 	public void learn(Double realOutput){
-		System.out.println("==========NEW TRAINING=========");
-		System.out.println("Layer 1:");
-		for (INode iNode : layer1) {
-			iNode.compute();
-			System.out.println(iNode.getValue());
-		}
-		System.out.println("Layer 2:");
+		
+		// VALUE COMPUTATIONS (calculate_output)
+		for (INode iNode : layer1)	iNode.compute();
 		double layer2total = 0;
 		for (INode iNode : layer2) {
 			iNode.compute();
 			layer2total += iNode.getValue();
-			System.out.println(iNode.getValue());
 		}
-		System.out.println("Layer 3:");
-		for (INode iNode : layer3) {
-			iNode.compute(layer2total);
-			System.out.println(iNode.getValue());
-		}
-		System.out.println("Layer 4:");
-		for (INode iNode : layer4) {
-			iNode.compute();
-			System.out.println(iNode.getValue());
-		}
-		System.out.println("Layer 5:");
-		for (INode iNode : layer5) {
-			iNode.compute();
-			System.out.println(iNode.getValue());
-		}
-		System.out.println("==========ERRORS=========");
-		System.out.println("Layer 5:");
-		for (INode iNode : layer5) {
-			iNode.calculateError(realOutput);
-			System.out.println(iNode.getError());
-		}
-		System.out.println("Layer 4:");
-		for (INode iNode : layer4) {
-			iNode.calculateError();
-			System.out.println(iNode.getError());
-		}
-		System.out.println("Layer 3:");
-		for (INode iNode : layer3) {
-			iNode.calculateError();
-			System.out.println(iNode.getError());
-		}
-		System.out.println("Layer 2:");
-		for (INode iNode : layer2) {
-			iNode.calculateError(layer2total);
-			System.out.println(iNode.getError());
-		}
-		System.out.println("Layer 1:");
-		for (INode iNode : layer1) {
-			iNode.calculateError();
-			System.out.println(iNode.getError());
-		}
+		for (INode iNode : layer3) iNode.compute(layer2total);
+		for (INode iNode : layer4) iNode.compute();
+		for (INode iNode : layer5) iNode.compute();
 		
-		// PARAMETER UPDATES
+		//ERROR CALCULATIONS (calculate_de_do)
+		for (INode iNode : layer5) iNode.calculateError(realOutput);
+		for (INode iNode : layer4) iNode.calculateError();
+		for (INode iNode : layer3) iNode.calculateError();
+		for (INode iNode : layer2) iNode.calculateError(layer2total);
+		for (INode iNode : layer1) iNode.calculateError();
+
+		// PARAMETER UPDATES (update_de_dp)
+		for (INode iNode : layer4) iNode.updateParameters();
 		
-		
-		
-		
-		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+			
 	}
+	
+	public void updateParameters(){
+
+	}
+	
 	
 	private void constructFIS() throws NoPostNodeException, NoPreNodeException{
 		
@@ -212,9 +185,46 @@ public class Machine {
 		}
 	}
 	
-	public String layerToString(INode[] layer){
+	public String layerToString(INode[] layer, int key){
 		String output = "";
-		
+		/**
+		 * 1 -> values
+		 * 2 -> values and parameters
+		 * 3 -> parameters detailed
+		 * 4 -> values and errors
+		 */
+
+		switch (key) {
+		case 1:
+			for (INode iNode : layer) {
+				output += iNode.getValue() + "\n";
+			}
+			break;
+		case 2:
+			for (INode iNode : layer) {
+				output += "\nNode Value: " + iNode.getValue() + "\t";
+				for (Parameter param : iNode.getParameters()) {
+					output += "Parameter: " + param.getValue() + "\t";
+				}
+			}
+			break;
+		case 3:
+			for (INode iNode : layer) {
+				for (Parameter param : iNode.getParameters()) {
+					output += "\nParameter: " + param.getValue() + "\t";
+					output += "De_dp: " + param.getDe_dp() + "\t";
+				}
+			}
+			break;
+		case 4:
+			for (INode iNode : layer) {
+				output += iNode.getValue() + " Error: " + iNode.getError() + "\n";
+			}
+			break;
+		default:
+			break;
+		}
+		/*
 		for (INode iNode : layer) {
 			output += "\n\nNode value: " + iNode.getValue() + "\n";
 			output +=  "Prenodes: ";
@@ -226,10 +236,19 @@ public class Machine {
 				output += postNode.getValue() + "\t";
 			}
 		}
-		
+		*/
 		return output;
 	}
 	
-
+	public String parametersToString(INode[] layer){
+		String retval="";
+		for (INode iNode : layer) {
+			retval += "\n";
+			for (Parameter param : iNode.getParameters()) {
+				retval += param.getDe_dp() + "\t";
+			}
+		}
+		return retval;
+	}
 
 }

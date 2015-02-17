@@ -12,6 +12,7 @@ public abstract class AbstractNode implements INode {
 	private double errorDerivative;
 	private List<INode> preNodes;
 	private List<INode> postNodes;
+	Parameter[] params;
 	
 	public AbstractNode(double val) {
 		this.setValue(val);
@@ -26,6 +27,11 @@ public abstract class AbstractNode implements INode {
 	
 	@Override
 	public void calculateError(double... param){
+		// no any special computation by default
+	}
+	
+	@Override
+	public void updateParameters(){
 		// no any special computation by default
 	}
 	
@@ -77,6 +83,11 @@ public abstract class AbstractNode implements INode {
 	@Override
 	public double getError() {
 		return this.errorDerivative;
+	}
+	
+	@Override
+	public Parameter[] getParameters() {
+		return params;
 	}
 
 }

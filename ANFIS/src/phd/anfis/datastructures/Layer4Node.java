@@ -1,6 +1,8 @@
 package phd.anfis.datastructures;
 
 
+import java.util.Random;
+
 import phd.anfis.consequent.ConsequenceCalculator;
 
 public class Layer4Node extends AbstractNode {
@@ -8,11 +10,16 @@ public class Layer4Node extends AbstractNode {
 	ConsequenceCalculator calculator;
 	INode[] inputLayer;
 	double helperErrorLayer3;
+
 	
 	public Layer4Node(double val,INode[] inputs) {
 		super(val);
 		this.inputLayer = inputs;
-		calculator = new ConsequenceCalculator(inputLayer.length);
+		params = new Parameter[inputLayer.length+1];
+		Random r = new Random();
+		for (int i=0 ; i<params.length ; i++)
+			params[i] = new Parameter(1 * r.nextDouble());
+		calculator = new ConsequenceCalculator(params);
 	}
 	
 	
@@ -37,6 +44,18 @@ public class Layer4Node extends AbstractNode {
 	
 	private void errorHelperForLayer3(){
 		helperErrorLayer3 = calculator.compute(inputLayer);
+	}
+	
+	@Override
+	public void updateParameters(){
+		for (int p=0; p<params.length-1 ; p++) {
+			params[p].setDe_dp(params[p].getDe_dp() + super.getError() * derivative_o_p(p));
+		}
+		params[params.length-1].setDe_dp(params[params.length-1].getDe_dp() + super.getError() * super.getPreNodes().get(0).getValue());
+	}
+	
+	private double derivative_o_p(int p){
+		return ( super.getPreNodes().get(0).getValue() * inputLayer[p].getValue()); // wn * x
 	}
 
 }

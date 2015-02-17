@@ -19,4 +19,6 @@ public interface INode {
 	public void calculateError(double... param);
 	public void setError(double e);
 	public double getError();
+	public void updateParameters();
+	public Parameter[] getParameters();
 }
