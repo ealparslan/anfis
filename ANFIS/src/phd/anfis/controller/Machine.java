@@ -94,9 +94,20 @@ public class Machine {
 		}
 		System.out.println("Layer 2:");
 		for (INode iNode : layer2) {
+			iNode.calculateError(layer2total);
+			System.out.println(iNode.getError());
+		}
+		System.out.println("Layer 1:");
+		for (INode iNode : layer1) {
 			iNode.calculateError();
 			System.out.println(iNode.getError());
 		}
+		
+		// PARAMETER UPDATES
+		
+		
+		
+		
 		
 	}
 	

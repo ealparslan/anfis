@@ -17,4 +17,16 @@ public class Layer1Node extends AbstractNode {
 		super.setValue(mf.compute(super.getPreNodes().get(0).getValue()));
 	}
 
+	@Override
+	public void calculateError(double... param){
+		double error = 0;
+		for (INode postNode : super.getPostNodes()) {
+			error += derivative((Layer2Node)postNode) * postNode.getError();
+		}
+		super.setError(error);
+	}
+	
+	private double derivative(Layer2Node postNode){
+		return (postNode.getValue()/super.getValue());
+	}
 }

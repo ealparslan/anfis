@@ -25,13 +25,13 @@ public class Layer4Node extends AbstractNode {
 	public void calculateError(double... param){
 		double error = 0;
 		for (INode postNode : super.getPostNodes()) {
-			error += derivative() * postNode.getError();
+			error += derivative((Layer5Node)postNode) * postNode.getError();
 		}
 		super.setError(error);
 		errorHelperForLayer3();
 	}
 	
-	private double derivative(){
+	private double derivative(Layer5Node postNode){
 		return 1.0;
 	}
 	
