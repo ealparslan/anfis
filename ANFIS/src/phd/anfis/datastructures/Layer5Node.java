@@ -11,6 +11,11 @@ public class Layer5Node extends AbstractNode {
 	}
 	
 	@Override
+	public void calculateError(double... param){
+		super.setError(-2 * (param[0] - super.getValue()));
+	}
+	
+	@Override
 	public void addPostNode(INode n) throws NoPostNodeException
 	{
 		throw new NoPostNodeException();

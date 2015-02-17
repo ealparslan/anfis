@@ -35,7 +35,7 @@ public class Machine {
 		for(int i=0;i<layer1.length;i++) layer1[i]=new Layer1Node(0);
 		for(int i=0;i<layer2.length;i++) layer2[i]=new Layer2Node(0);
 		for(int i=0;i<layer3.length;i++) layer3[i]=new Layer3Node(0);
-		for(int i=0;i<layer4.length;i++) layer4[i]=new Layer4Node(0);
+		for(int i=0;i<layer4.length;i++) layer4[i]=new Layer4Node(0,layer0);
 		for(int i=0;i<layer5.length;i++) layer5[i]=new Layer5Node(0);
 		
 		dummyDataLoader();
@@ -67,17 +67,35 @@ public class Machine {
 			System.out.println(iNode.getValue());
 		}
 		System.out.println("Layer 4:");
-		double[] inputparams = new double[INPUT_NUMBER];
-		for (int n=0 ; n<INPUT_NUMBER ; n++)
-			inputparams[n]=layer0[n].getValue();
 		for (INode iNode : layer4) {
-			iNode.compute(inputparams);
+			iNode.compute();
 			System.out.println(iNode.getValue());
 		}
 		System.out.println("Layer 5:");
 		for (INode iNode : layer5) {
 			iNode.compute();
 			System.out.println(iNode.getValue());
+		}
+		System.out.println("==========ERRORS=========");
+		System.out.println("Layer 5:");
+		for (INode iNode : layer5) {
+			iNode.calculateError(realOutput);
+			System.out.println(iNode.getError());
+		}
+		System.out.println("Layer 4:");
+		for (INode iNode : layer4) {
+			iNode.calculateError();
+			System.out.println(iNode.getError());
+		}
+		System.out.println("Layer 3:");
+		for (INode iNode : layer3) {
+			iNode.calculateError();
+			System.out.println(iNode.getError());
+		}
+		System.out.println("Layer 2:");
+		for (INode iNode : layer2) {
+			iNode.calculateError();
+			System.out.println(iNode.getError());
 		}
 		
 	}

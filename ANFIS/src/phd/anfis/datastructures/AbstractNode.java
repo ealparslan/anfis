@@ -9,6 +9,7 @@ import phd.anfis.exceptions.NoPreNodeException;
 public abstract class AbstractNode implements INode {
 	
 	private double value;
+	private double errorDerivative;
 	private List<INode> preNodes;
 	private List<INode> postNodes;
 	
@@ -22,6 +23,12 @@ public abstract class AbstractNode implements INode {
 	public void compute(double... param){
 		// no any special computation by default
 	}
+	
+	@Override
+	public void calculateError(double... param){
+		// no any special computation by default
+	}
+	
 
 	@Override
 	public void addPreNode(INode n) throws NoPreNodeException {
@@ -61,6 +68,15 @@ public abstract class AbstractNode implements INode {
 	@Override
 	public double getValue() {
 		return this.value;
+	}
+	
+	@Override
+	public void setError(double error) {
+		this.errorDerivative = error;
+	}
+	@Override
+	public double getError() {
+		return this.errorDerivative;
 	}
 
 }
