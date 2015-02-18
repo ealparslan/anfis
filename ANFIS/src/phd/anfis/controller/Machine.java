@@ -39,7 +39,7 @@ public class Machine {
 		for(int i=0;i<layer4.length;i++) layer4[i]=new Layer4Node(0,layer0);
 		for(int i=0;i<layer5.length;i++) layer5[i]=new Layer5Node(0);
 		
-		dummyDataLoader();
+		//dummyDataLoader();
 		
 		try {
 			constructFIS();
@@ -49,6 +49,8 @@ public class Machine {
 	}
 	
 	public void learn(Double realOutput){
+		
+		//System.out.println("New Input Learning!");
 		
 		// VALUE COMPUTATIONS (calculate_output)
 		for (INode iNode : layer1)	iNode.compute();
@@ -68,19 +70,25 @@ public class Machine {
 		for (INode iNode : layer2) iNode.calculateError(layer2total);
 		for (INode iNode : layer1) iNode.calculateError();
 
-		// PARAMETER UPDATES (update_de_dp)
-		for (INode iNode : layer4) iNode.updateParameters();
+		// DE_DP PARAMETER UPDATES (update_de_dp)
+		for (INode iNode : layer4) iNode.update_de_dp();
+		for (INode iNode : layer1) iNode.update_de_dp();
+		
 		
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(10);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-			
+
 	}
 	
 	public void updateParameters(){
-
+		System.out.println("Parameter updates for this epoch!");
+		for (INode iNode : layer1){
+			iNode.updateParameters(1);
+			//System.out.println(iNode.toString());
+		}
 	}
 	
 	
@@ -134,8 +142,6 @@ public class Machine {
 		//definePreNodes(layer1); //calculated from postnodes
 		definePreNodes(layer0);
 		
-		//System.out.println(layerToString(layer1));
-
 	}
 	
 	private void definePreNodes(INode[] layer) throws NoPreNodeException{
@@ -153,35 +159,6 @@ public class Machine {
 			for (INode iNode : prenodes) {
 				iNode.addPostNode(layer[i]);
 			}
-		}
-	}
-	
-	private void dummyDataLoader(){
-		
-		int i=1;
-		for (INode iNode : layer0) {
-			iNode.setValue(i);
-			i++;
-		}
-		for (INode iNode : layer1) {
-			iNode.setValue(i);
-			i++;
-		}
-		for (INode iNode : layer2) {
-			iNode.setValue(i);
-			i++;
-		}
-		for (INode iNode : layer3) {
-			iNode.setValue(i);
-			i++;
-		}
-		for (INode iNode : layer4) {
-			iNode.setValue(i);
-			i++;
-		}
-		for (INode iNode : layer5) {
-			iNode.setValue(i);
-			i++;
 		}
 	}
 	
@@ -218,7 +195,7 @@ public class Machine {
 			break;
 		case 4:
 			for (INode iNode : layer) {
-				output += iNode.getValue() + " Error: " + iNode.getError() + "\n";
+				output += "\nNode Value: " + iNode.getValue() + " Error: " + iNode.getError() + "\n";
 			}
 			break;
 		default:

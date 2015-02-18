@@ -12,7 +12,7 @@ public class Main {
 	
 	public static List<Double> realOutputList = new ArrayList<Double>();
 	public static List<Double[]> inputsList = new ArrayList<Double[]>();
-	public static int EPOCH_SIZE = 1;
+	public static int EPOCH_SIZE = 3;
 	public static int MEMBERSHIP_FUNCTION_COUNT = 2;
 	public static int INPUT_COUNT = 4;
 	
@@ -31,16 +31,13 @@ public class Main {
 					anfis.layer0[inputElement].setValue(input);
 					inputElement++;
 				}
-				System.out.println("=====================================NEW INPUT=========================");
-				System.out.println("=====================================NEW INPUT=========================");
-				System.out.println("=====================================NEW INPUT=========================");
-				System.out.println("=====================================NEW INPUT=========================");
 
 				anfis.learn(realOutputList.get(inputRow)); // we have a structured machine with filled layer 0, train!! 
 				
 				// something todo about learning results
 				inputRow++;
 			}
+			System.out.println(anfis.layerToString(anfis.layer5, 4));
 			anfis.updateParameters();
 		}
 		

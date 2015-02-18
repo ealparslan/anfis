@@ -47,7 +47,7 @@ public class Layer4Node extends AbstractNode {
 	}
 	
 	@Override
-	public void updateParameters(){
+	public void update_de_dp(){
 		for (int p=0; p<params.length-1 ; p++) {
 			params[p].setDe_dp(params[p].getDe_dp() + super.getError() * derivative_o_p(p));
 		}
@@ -57,5 +57,6 @@ public class Layer4Node extends AbstractNode {
 	private double derivative_o_p(int p){
 		return ( super.getPreNodes().get(0).getValue() * inputLayer[p].getValue()); // wn * x
 	}
+		
 
 }

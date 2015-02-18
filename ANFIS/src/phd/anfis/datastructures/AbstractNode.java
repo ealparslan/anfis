@@ -31,7 +31,7 @@ public abstract class AbstractNode implements INode {
 	}
 	
 	@Override
-	public void updateParameters(){
+	public void update_de_dp(){
 		// no any special computation by default
 	}
 	
@@ -88,6 +88,31 @@ public abstract class AbstractNode implements INode {
 	@Override
 	public Parameter[] getParameters() {
 		return params;
+	}
+	
+	@Override
+	public void updateParameters(double step_size) {
+		double lenght = gradient_vector_length();
+		for (Parameter parameter : params) {
+			parameter.setValue(parameter.getValue() - (step_size * parameter.getDe_dp() / lenght));
+		}
+	}
+	
+	private double gradient_vector_length(){
+		double total=0;
+		for (Parameter parameter : params) {
+			total += Math.pow(parameter.getDe_dp(), 2.0);
+		}
+		return total;
+	}
+	@Override
+	public String toString() {
+		String retval="";
+		retval += "Node Value: " + this.getValue() + "\t" + " Node Error: " + this.getError() + "\n";
+		for (Parameter parameter : params) {
+			retval += "Parameter Value: " + parameter.getValue() + "\t" + " Parameter Error: " + parameter.getDe_dp() + "\n";
+		}
+		return retval;
 	}
 
 }
