@@ -86,7 +86,7 @@ public class Machine {
 	public void updateParameters(){
 		System.out.println("Parameter updates for this epoch!");
 		for (INode iNode : layer1){
-			iNode.updateParameters(1000);
+			iNode.updateParameters(10);
 			//System.out.println(iNode.toString());
 		}
 	}
@@ -195,7 +195,7 @@ public class Machine {
 			break;
 		case 4:
 			for (INode iNode : layer) {
-				output += "\nNode Value: " + iNode.getValue() + " Error: " + iNode.getError() + "\n";
+				output += "Node Value: " + iNode.getValue() + " Error: " + iNode.getError() + "\n";
 			}
 			break;
 		default:

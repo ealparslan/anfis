@@ -43,12 +43,12 @@ public class Layer1Node extends AbstractNode {
 	
 	@Override
 	public void update_de_dp(){
-		logger.printLog("\nParameter: " + params[0].getValue() + "\t" + params[1].getValue() + "\t" + params[2].getValue());
+		//logger.printLog("\nParameter: " + params[0].getValue() + "\t" + params[1].getValue() + "\t" + params[2].getValue());
 		for (int p=0; p<params.length ; p++) {
 			double actual = params[p].getDe_dp();
 			double derivative = derivative_o_p(p);
 			double updated = actual + super.getError() * derivative;
-			logger.printLog("Actual dp: " + actual + "\t" + "Derivative: "+ derivative + "\t" + " Updated dp: " + updated);
+			//logger.printLog("Actual dp: " + actual + "\t" + "Derivative: "+ derivative + "\t" + " Updated dp: " + updated);
 			params[p].setDe_dp(updated);
 		}
 	//	params[params.length-1].setDe_dp(params[params.length-1].getDe_dp() + super.getError() * super.getPreNodes().get(0).getValue());
@@ -66,7 +66,7 @@ public class Layer1Node extends AbstractNode {
 		tmp1 = (x - c)/a;
 		tmp2 = tmp1 == 0 ? 0 : Math.pow(Math.pow(tmp1, 2.0), b);
 		denom = (1 + tmp2)*(1 + tmp2);
-		logger.printLog("tmp1: " + tmp1 + "\t" + "tmp2: "+ tmp2 + "\t" + " denom: " + denom);
+		//logger.printLog("tmp1: " + tmp1 + "\t" + "tmp2: "+ tmp2 + "\t" + " denom: " + denom);
 		switch(p) {
 		case 0: /* partial mf to partial a */
 			retval = 2*b*tmp2/(a*denom);
