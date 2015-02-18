@@ -20,12 +20,12 @@ public class Layer1Node extends AbstractNode {
 			params[i] = new Parameter(1 * r.nextDouble());
 		}
 			
-		mf = new GeneralizedBell(params);
+		mf = new GeneralizedBell();
 	}
 	
 	@Override
 	public void compute(double... param){
-		super.setValue(mf.compute(super.getPreNodes().get(0).getValue()));
+		super.setValue(mf.compute(super.getPreNodes().get(0).getValue(),params));
 	}
 
 	@Override

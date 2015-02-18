@@ -19,9 +19,9 @@ public class FileLogger implements ILogger {
 	public void printLog(String s) {
 		try {
 			file = new File("resources/log.txt");
- 			if (!file.exists()) {
-				file.createNewFile();
-			}
+ 			//if (!file.exists()) {
+			//	file.createNewFile();
+			//}
 			fw = new FileWriter(file.getAbsoluteFile(),true);
 			bw = new BufferedWriter(fw);
 			bw.write(s+"\n");

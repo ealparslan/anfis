@@ -5,6 +5,8 @@ import java.util.List;
 
 import phd.anfis.dal.FileDataLoader;
 import phd.anfis.dal.IDataLoader;
+import phd.anfis.logger.FileLogger;
+import phd.anfis.logger.ILogger;
 
 
 public class Main {
@@ -15,6 +17,8 @@ public class Main {
 	public static int EPOCH_SIZE = 3;
 	public static int MEMBERSHIP_FUNCTION_COUNT = 2;
 	public static int INPUT_COUNT = 4;
+	
+	public static ILogger logger = new FileLogger();
 	
 	public static void main(String[] args) {
 		
@@ -36,8 +40,13 @@ public class Main {
 				
 				// something todo about learning results
 				inputRow++;
+				logger.printLog("Layer 5: " + anfis.layerToString(anfis.layer5, 4));
+
 			}
-			System.out.println(anfis.layerToString(anfis.layer5, 4));
+			//System.out.println("Layer 1: " + anfis.layerToString(anfis.layer1, 4));
+			//System.out.println("Layer 2: " + anfis.layerToString(anfis.layer2, 4));
+			//System.out.println("Layer 3: " + anfis.layerToString(anfis.layer3, 4));
+			//System.out.println("Layer 4: " + anfis.layerToString(anfis.layer4, 4));
 			anfis.updateParameters();
 		}
 		

@@ -2,6 +2,8 @@ package phd.anfis.membership;
 
 import java.util.Random;
 
+import phd.anfis.datastructures.Parameter;
+
 public class Gaussian implements IMembershipFunction {
 	
 	double c,s;
@@ -14,7 +16,7 @@ public class Gaussian implements IMembershipFunction {
 
 
 	@Override
-	public double compute(Double input) {
+	public double compute(Double input, Parameter[] params) {
 		double parantezici=(input-c)/s;
 		double kare = Math.pow(parantezici, 2);
 		double sonuc = Math.exp(-kare/2);
