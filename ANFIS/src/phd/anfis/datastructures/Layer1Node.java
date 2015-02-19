@@ -64,7 +64,7 @@ public class Layer1Node extends AbstractNode {
 		b = params[1].getValue();
 		c = params[2].getValue();
 		tmp1 = (x - c)/a;
-		tmp2 = tmp1 == 0 ? 0 : Math.pow(Math.pow(tmp1, 2.0), b);
+		tmp2 = (tmp1 == 0) ? 0 : Math.pow(Math.pow(tmp1, 2.0), b);
 		denom = (1 + tmp2)*(1 + tmp2);
 		//logger.printLog("tmp1: " + tmp1 + "\t" + "tmp2: "+ tmp2 + "\t" + " denom: " + denom);
 		switch(p) {

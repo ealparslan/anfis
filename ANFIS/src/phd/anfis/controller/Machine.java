@@ -86,7 +86,7 @@ public class Machine {
 	public void updateParameters(){
 		System.out.println("Parameter updates for this epoch!");
 		for (INode iNode : layer1){
-			iNode.updateParameters(10);
+			iNode.updateParameters(1);
 			//System.out.println(iNode.toString());
 		}
 	}

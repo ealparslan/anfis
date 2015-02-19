@@ -27,9 +27,12 @@ public class Main {
 		IDataLoader loader = new FileDataLoader("resources/input.txt");
 		loader.LoadData(inputsList, realOutputList);
 		
+		double totalError5thLayer;
+		double errorAvg = 0;
+		
 		for (int e=0; e<EPOCH_SIZE ; e++){ //foreach epoch run
 			int inputRow=0;
-			double totalError5thLayer=0;
+			totalError5thLayer=0;
 			for (Double[] inputs : inputsList) { // foreach input row
 				int inputElement=0;
 				for (Double input : inputs){ // this is for setting input values to layer0 nodes
@@ -45,7 +48,9 @@ public class Main {
 				totalError5thLayer += anfis.layer5[0].getError();
 
 			}
-			logger.printLog("Average Error of Layer 5 for all Inputs: " + totalError5thLayer/inputsList.size());
+			
+			logger.printLog("Change in Average Error of Layer 5 for all Inputs: " + (errorAvg - totalError5thLayer/inputsList.size()));
+			errorAvg = totalError5thLayer/inputsList.size();
 			logger.printLog("==\n==\n==\n==\n==\n==\n");
 			//System.out.println("Layer 1: " + anfis.layerToString(anfis.layer1, 4));
 			//System.out.println("Layer 2: " + anfis.layerToString(anfis.layer2, 4));
